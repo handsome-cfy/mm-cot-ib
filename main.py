@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument('--bs', type=int, default=16)
     parser.add_argument('--input_len', type=int, default=512)
     parser.add_argument('--output_len', type=int, default=64)
-    parser.add_argument('--vot_num', type=int, default=5)
+    parser.add_argument('--vot_num', type=int, default=0)
     parser.add_argument('--alpha', type=float, default=0.5)
     parser.add_argument('--eval_bs', type=int, default=16)
     parser.add_argument('--eval_acc', type=int, default=None, help='evaluate accumulation step')
