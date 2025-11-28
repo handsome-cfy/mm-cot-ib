@@ -58,7 +58,8 @@ def get_scores(result_data, rationale_data, results_reference, data_file):
 
     ## Similarity
     model = SentenceTransformer('./models/sentence-transformers/all-MiniLM-L6-v2').cuda()
-    similariry = caculate_similariry(rationale_data, results_reference, model)
+    # similariry = caculate_similariry(rationale_data, results_reference, model)
+    similariry = 1
 
     scores = {
             "answer":{

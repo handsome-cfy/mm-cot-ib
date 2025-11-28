@@ -68,6 +68,7 @@ def parse_args():
     parser.add_argument('--prompt_format', type=str, default='QCM-A', help='prompt format template',
                         choices=['QCM-A', 'QCM-LE', 'QCMG-A', 'QCM-LEA', 'QCM-ALE','QCMG-A'])
     parser.add_argument('--seed', type=int, default=42, help='random seed')
+    parser.add_argument("--beta", type=float)
     args = parser.parse_args()
     return args
         
@@ -107,11 +108,12 @@ def T5Trainer(
         patch_size = img_shape[args.img_type]
         if args.resume_from_checkpoint:
             console.log(f"[Model]: Resuming from checkpoint {args.resume_from_checkpoint}...\n")
-            model = T5ForMultimodalGenerationMCCoT.from_pretrained(args.resume_from_checkpoint, patch_size=patch_size, padding_idx=padding_idx, save_dir=save_dir,vot_num=args.vot_num,alpha=args.alpha) 
+            model = T5ForMultimodalGenerationMCCoT.from_pretrained(args.resume_from_checkpoint, patch_size=patch_size, padding_idx=padding_idx, save_dir=save_dir,vot_num=args.vot_num,alpha=args.alpha, beta=args.beta) 
         else:
             console.log(f"[Model]: Loading {args.model}...\n")
-            model = T5ForMultimodalGenerationMCCoT.from_pretrained(args.model, patch_size=patch_size, padding_idx=padding_idx, save_dir=save_dir,vot_num=args.vot_num,alpha=args.alpha)
+            model = T5ForMultimodalGenerationMCCoT.from_pretrained(args.model, patch_size=patch_size, padding_idx=padding_idx, save_dir=save_dir,vot_num=args.vot_num,alpha=args.alpha, beta=args.beta)
 
+        # model.ib_model.log_path_loss = save_dir + "loss.jsonl"
         if args.evaluate_dir is not None:
             print("Inference Phase")
         

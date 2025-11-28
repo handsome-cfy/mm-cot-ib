@@ -4,6 +4,8 @@ import torch
 import clusterings
 import numpy as np
 
+import json
+
 
 class InformationBottleneck(nn.Module):
     def __init__(self, embedding_size, beta, device=None):
@@ -38,6 +40,7 @@ class InformationBottleneck(nn.Module):
         #self.reset_alpha()
         
         self.clusterer = clusterings.SpectralClustering()
+        self.log_path_loss = f"./results/ib_beta{beta}.json"
     
     def forward_alpha(self, x):
         # alpha = self.alpha
@@ -179,8 +182,10 @@ class InformationBottleneck(nn.Module):
     
         iba_loss,compression_term,fitting_term = self.calc_loss(hidden_states, image_embedding)
         # log_data_loss_2 = {"IB-loss": iba_loss.item(),"compression_term": compression_term.item(), "fitting_term": fitting_term.item() }
-        # with open(self.log_path_loss, "a") as f:
-        #     f.write(json.dumps(log_data_loss_2) + "\n")
+        log_data_loss_2 = {"IB-loss": iba_loss.item(),"compression_term": compression_term.item(), "fitting_term": fitting_term.item() }
+
+        with open(self.log_path_loss, "a") as f:
+            f.write(json.dumps(log_data_loss_2) + "\n")
     
 
         # # 1.使用image/text token的余弦相似度来进行token choose
@@ -205,7 +210,7 @@ class InformationBottleneck(nn.Module):
         #     f.write(json.dumps(log_data_mask) + "\n")
 
         # topk_scores, topk_indices = torch.topk(mask_norm, k, dim=1)  # 都是 [bs, k]
-        #---------------------------------------#
+        # --------------------------------------- #
         
         sc_indices = self.Spectral_Cluster_Voting(
             image_embedding[:, 1:],                      # 去掉 cls token

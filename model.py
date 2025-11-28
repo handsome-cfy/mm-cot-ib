@@ -27,7 +27,7 @@ class T5ForMultimodalGenerationMCCoT(T5ForConditionalGeneration):
         r"decoder.block.0.layer.1.EncDecAttention.relative_attention_bias.weight",
     ]
 
-    def __init__(self, config: T5Config, patch_size, padding_idx, save_dir,vot_num,alpha,beta=0.3):
+    def __init__(self, config: T5Config, patch_size, padding_idx, save_dir,vot_num, alpha, beta):
         super().__init__(config)
         self.model_dim = config.d_model
         self.vot_num=vot_num
